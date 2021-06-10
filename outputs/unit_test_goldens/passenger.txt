@@ -1,0 +1,35 @@
+Invalid Passenger Aadhar
+Invalid Passenger Mobile
+Invalid Passenger Name
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+Passenger Details:
+Name: Obi Vann Kenobi
+Aadhar Number: 896412357412
+Date of Birth : 18/June/1970
+Gender: Male
+Mobile No.: 9433821652
+Disablity Id.: None
+Disability Type : None
+Passenger Details:
+Name:   Satine
+Aadhar Number: 415621478953
+Date of Birth : 6/June/1960
+Gender: Female
+Mobile No.: 4512639876
+Disablity Id.: None
+Disability Type : None
+Passenger Details:
+Name: Jabba  
+Aadhar Number: 841250310123
+Date of Birth : 21/June/1940
+Gender: Male
+Mobile No.: 7485123654
+Disablity Id.: 8451
+Disability Type : Tb

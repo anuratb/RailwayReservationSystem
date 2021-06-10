@@ -1,0 +1,652 @@
+
+Unit Tests
+----------------------------------------------------------------------------------
+Gender                                    
+Gender::Male::getName()  --------------  Golden OP: Male :PASS
+Gender::Female::getName()  --------------Golden OP  : Female :PASS
+Gender::Male::Type().getSrCitizenConcession()-----------Golden op: 0.4 :PASS
+Gender::Female::Type().getSrCitizenConcession()-------------------Golden op: 0.5 :PASS
+----------------------------------------------------------------------------------
+Passenger
+Tests:
+P5 = Passenger::CreatePassenger("415621478953", "6/6/1960", Gender::Female::Type(), "4512639876", "", "", "Satine");
+P1 = Passenger::CreatePassenger("123456781234", "1/2/1980", Gender::Male::Type(), "9433222222", "Anakin", "", "Skywalker", "1111", &Divyang::Ortho::Type());    
+P3 = Passenger::CreatePassenger("896412357412", "18/6/1970", Gender::Male::Type(), "9433821652", "Obi", "Vann", "Kenobi");
+P8 = Passenger::CreatePassenger("841250310123", "21/6/1940", Gender::Male::Type(), "7485123654", "Jabba", "", "", "8451", &Divyang::Tb::Type());   
+---------------|||||------------------
+              \    /
+               \  /
+                \/
+            Successfully created :PASS
+//Golden Output : Invalid Passenger Aadhar
+ P11 = Passenger::CreatePassenger("84125031012", "21/6/1940", Gender::Male::Type(), "7485123654", "", "", "Hutt", "8451", &Divyang::Tb::Type());
+:PASS
+
+//Golden Out : Invalid Passenger Mobile
+P11 = Passenger::CreatePassenger("841250310123", "21/6/1940", Gender::Male::Type(), "748512654", "", "", "Hutt", "8451", &Divyang::Tb::Type());
+:PASS
+
+//Golden OP: Invalid Passenger Name
+P11 = Passenger::CreatePassenger("841250310123", "21/6/1940", Gender::Male::Type(), "7485126544", "", "", "", "8451", &Divyang::Tb::Type());
+:PASS
+
+Check Contents of P1 :PASS
+
+
+Test : Output P1,P3,P5,P8
+Golden Output : 
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+Passenger Details:
+Name: Obi Vann Kenobi
+Aadhar Number: 896412357412
+Date of Birth : 18/June/1970
+Gender: Male
+Mobile No.: 9433821652
+Disablity Id.: None
+Disability Type : None
+Passenger Details:
+Name:   Satine
+Aadhar Number: 415621478953
+Date of Birth : 6/June/1960
+Gender: Female
+Mobile No.: 4512639876
+Disablity Id.: None
+Disability Type : None
+Passenger Details:
+Name: Jabba  
+Aadhar Number: 841250310123
+Date of Birth : 21/June/1940
+Gender: Male
+Mobile No.: 7485123654
+Disablity Id.: 8451
+Disability Type : Tb
+
+-------------------------------------------------------------------------------------------------
+BookingCatehory::Ladies
+Passenger *P :Passenger::CreatePassenger("875496235412", "9/10/1976", Gender::Female::Type(), "4512369875", "Padme", "", "Amidala")
+P1 :Passenger::CreatePassenger("123456781234", "1/2/1980", Gender::Male::Type(), "9433222222", "Anakin", "", "Skywalker", "1111", &Divyang::Ortho::Type());
+Ladies::Type().getCategoryName()-----------------------Golden OP : "Ladies":PASS
+Ladies::Type().getEligibility(*P)-----------------------Golden Op: True:PASS
+Ladies::Type().getEligibility(*P1)-----------------------Golden Op: False :PASS
+Ladies::Type().getConcession(*P,BookingClass::AC2Tier::Type())-------------Golden OP : 0.00:PASS
+ 
+
+BookingCategory::General
+P :Passenger::CreatePassenger("896412357412", "18/6/1970", Gender::Male::Type(), "9433821652", "Obi", "Vann", "Kenobi");
+P1 :Passenger::CreatePassenger("123456781234", "1/2/1980", Gender::Male::Type(), "9433222222", "Anakin", "", "Skywalker", "1111", &Divyang::Ortho::Type());
+General::Type().getCategoryName()-------------------------------------Golden op: "General"
+General::Type().getEligibility(*P)---------------------------------Golden op: True:PASS
+General::Type().getEligibility(*P1)---------------------------------Golden op: True:PASS
+General::Type().getConcession(*P,BookingClass::AC2Tier::Type())-----Golden op: 0.00  :PASS     
+   
+BookingCategory:Divyang
+P :Passenger::CreatePassenger("123456781234", "1/2/1980", Gender::Male::Type(), "9433222222", "Anakin", "", "Skywalker", "1111", &Divyang::Ortho::Type());
+P1 :Passenger::CreatePassenger("425631458963", "2/5/1901", Gender::Male::Type(), "9433162841", "", "", "Yoda");
+Divyang::Type().getCategoryName()-------------------------------------Golden op: "Divyang" :PASS
+Divyang::Type().getEligibility(*P)---------------------------------Golden op: True :PASS
+Divyang::Type().getEligibility(*P1)---------------------------------Golden op: False :PASS
+Divyang::Type().getConcession(*P,BookingClass::AC2Tier::Type())-----Golden op: 0.50  :PASS
+
+BookingCategory:SeniorCitizen
+P: Passenger::CreatePassenger("425631458963", "2/5/1901", Gender::Male::Type(), "9433162841", "", "", "Yoda");
+P1 :Passenger::CreatePassenger("123456781234", "1/2/1980", Gender::Male::Type(), "9433222222", "Anakin", "", "Skywalker", "1111", &SeniorCitizen::Ortho::Type());
+
+SeniorCitizen::Type().getCategoryName()-------------------------------------Golden op: "SeniorCitizen" :PASS
+SeniorCitizen::Type().getEligibility(*P)---------------------------------Golden op: True ::PASS
+SeniorCitizen::Type().getEligibility(*P1)---------------------------------Golden op: False  :PASS
+SeniorCitizen::Type().getConcession(*P,BookingClass::AC2Tier::Type())-----Golden op: 0.50  :PASS
+-------------------------------------------------------------------------------------------------------
+Booking
+
+General:
+//Initialize with folowing passengers
+P1 = Passenger::CreatePassenger("123456781234", "1/2/1980", Gender::Male::Type(), "9433222222", "Anakin", "", "Skywalker", "1111", &Divyang::Ortho::Type());
+P2 = Passenger::CreatePassenger("425631458963", "2/5/1901", Gender::Male::Type(), "9433162841", "", "", "Yoda");
+P3 = Passenger::CreatePassenger("896412357412", "18/6/1970", Gender::Male::Type(), "9433821652", "Obi", "Vann", "Kenobi");
+P4 = Passenger::CreatePassenger("844451263212", "11/11/2001", Gender::Male::Type(), "7455126438", "Luke", "", "Skywalker");
+P5 = Passenger::CreatePassenger("415621478953", "6/6/1960", Gender::Female::Type(), "4512639876", "", "", "Satine");
+P6 = Passenger::CreatePassenger("875496235412", "9/10/1976", Gender::Female::Type(), "4512369875", "Padme", "", "Amidala");
+P7 = Passenger::CreatePassenger("412875496523", "5/12/1990", Gender::Male::Type(), "4125896541", "Kannan", "", "Jarrus", "4512", &Divyang::Blind::Type());
+P8 = Passenger::CreatePassenger("841250310123", "21/6/1940", Gender::Male::Type(), "7485123654", "", "", "Hutt", "8451", &Divyang::Tb::Type());
+Do the follwing bookings 
+
+createBooking("Kolkata", "Mumbai", "1/4/2021", "7/4/2021", BookingClass::AC2Tier::Type(), BookingCategory::General::Type(), P1);
+Golden OP:   ::PASS
+BOOKING SUCCEEDED:
+PNR Number = 1
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = General
+Fare = 4078
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+G. OP : Invalid Dates of Booking and Reservation  ::PASS
+::createBooking("Chennai", "Mumbai", "5/4/2021", "4/4/2021", BookingClass::SecondSitting::Type(), BookingCategory::General::Type(), P3);
+
+G. OP : Invalid Dates of Booking and Reservation   ::PASS
+Booking::GeneralBooking::createBooking("Delhi", "Kolkata", "4/4/2021", "5/6/2022", BookingClass::Sleeper::Type(), BookingCategory::General::Type(), P2);
+
+
+G.OP : Invalid Station  ::PASS
+Booking::GeneralBooking::createBooking("Delhi", "Howrah", "4/4/2021", "5/6/2021", BookingClass::Sleeper::Type(), BookingCategory::General::Type(), P2);
+
+Concessional 
+
+
+With same passenger as above
+
+
+Booking *B1 = createBooking("Kolkata", "Mumbai", "1/4/2021", "7/4/2021", BookingClass::AC2Tier::Type(), BookingCategory::Divyang::Type(), P1);
+Golden OP:  ::PASS
+BOOKING SUCCEEDED:
+PNR Number = 1
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = Divyang
+Fare = 2064
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+
+
+Booking *B2 = createBooking("Chennai", "Mumbai", "5/4/2021", "6/4/2021", BookingClass::SecondSitting::Type(), BookingCategory::SeniorCitizen::Type(), P2);
+Golden OP:  ::PASS
+BOOKING SUCCEEDED:
+PNR Number = 2
+From Station = Mumbai
+To Station = Chennai
+Booking Date = 5/April/2021
+Travel Date = 6/April/2021
+Travel Class = Second Sitting
+ : Mode: Sitting
+ : Comfort: Non-AC
+ : Bunks: 0
+ : Luxury: No
+Booking Category = Senior Citizen
+Fare = 256
+Passenger Details:
+Name:   Yoda
+Aadhar Number: 425631458963
+Date of Birth : 2/May/1901
+Gender: Male
+Mobile No.: 9433162841
+Disablity Id.: None
+Disability Type : None
+
+
+
+Booking *B3 = createBooking("Chennai", "Mumbai", "5/4/2021", "4/4/2021", BookingClass::SecondSitting::Type(), BookingCategory::SeniorCitizen::Type(), P2);
+//INvalid Dates of Booking and Reservation   ::PASS
+
+Booking *B4 = Booking::ConcessionalBooking::createBooking("Delhi", "Kolkata", "4/4/2021", "5/6/2022", BookingClass::Sleeper::Type(), BookingCategory::SeniorCitizen::Type(), P5);
+//Invalid Dates of booking an dreservation  ::PASS
+
+Booking *B5 = Booking::ConcessionalBooking::createBooking("Delhi", "Amedabad", "4/4/2021", "5/6/2021", BookingClass::Sleeper::Type(), BookingCategory::SeniorCitizen::Type(), P5);
+//Invalid station ::PASS
+
+Priority::
+
+With same Passengers as above
+
+
+Booking *B1 = Booking::PriorityBooking::createBooking("Kolkata", "Mumbai", "1/4/2021", "7/4/2021", BookingClass::AC2Tier::Type(), BookingCategory::Tatkal::Type(), P1);
+Golden OP :  ::PASS
+BOOKING SUCCEEDED:
+PNR Number = 1
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = Tatkal
+Fare = 4578
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+
+Booking *B2 = Booking::PriorityBooking::createBooking("Chennai", "Mumbai", "5/4/2021", "8/4/2021", BookingClass::SecondSitting::Type(), BookingCategory::PremiumTatkal::Type(), P3);
+Golden OP: ::PASS
+BOOKING SUCCEEDED:
+PNR Number = 2
+From Station = Mumbai
+To Station = Chennai
+Booking Date = 5/April/2021
+Travel Date = 8/April/2021
+Travel Class = Second Sitting
+ : Mode: Sitting
+ : Comfort: Non-AC
+ : Bunks: 0
+ : Luxury: No
+Booking Category = PremiumTatkal
+Fare = 446
+Passenger Details:
+Name: Obi Vann Kenobi
+Aadhar Number: 896412357412
+Date of Birth : 18/June/1970
+Gender: Male
+Mobile No.: 9433821652
+Disablity Id.: None
+Disability Type : None
+
+Booking *B3 = Booking::PriorityBooking::createBooking("Chennai", "Mumbai", "5/4/2021", "4/4/2021", BookingClass::SecondSitting::Type(), BookingCategory::PremiumTatkal::Type(), P3);
+//Invalid Date of Booking and Reservation  ::PASS
+
+Booking *B4 = Booking::PriorityBooking::createBooking("Delhi", "Kolkata", "4/4/2021", "5/6/2022", BookingClass::Sleeper::Type(), BookingCategory::Tatkal::Type(), P2);
+//Invalid Date of Booking and Reservation  ::PASS
+
+Booking *B5 = Booking::PriorityBooking::createBooking("Delhi", "Howrah", "4/4/2021", "5/6/2021", BookingClass::Sleeper::Type(), BookingCategory::Tatkal::Type(), P2);
+//Invalid Station ::PASS
+
+----------------------------------------------------------------------------------------------------
+
+Date : Date Class
+
+1) "26/7/2018"  : Golden OP : 26/July/2018 ::PASS
+2) Date(32,6,2019) :Golden OP :Invalid Date::PASS
+2) "2/5//51/" :Golden OP : Invalid Format of date::PASS
+-----------------------------------------------------------------------------------------
+BookingClass 
+
+AC2Tier:                                   Goldens
+Type().GetName() -------------------------- "AC 2 Tier"   ::PASS 
+Type().GetNumberofTiers()-------------------------- 2  ::PASS
+Type().IsAC()------------------------------True::PASS
+Type().IsSitting()--------------------------False  ::PASS
+Type().IsLuxury()---------------------------False  ::PASS
+Golden Output with cout:::PASS
+AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+
+AC3Tier:                                   Goldens
+Type().GetName() -------------------------- "AC 3 Tier"  ::PASS  
+Type().GetNumberofTiers()-------------------------- 3 ::PASS
+Type().IsAC()------------------------------True::PASS
+Type().IsSitting()--------------------------False  ::PASS
+Type().IsLuxury()---------------------------False  ::PASS
+Golden Output with cout:::PASS
+AC 3 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 3
+ : Luxury: No
+
+ACChairCar:                                   Goldens
+Type().GetName() -------------------------- "AC Chair Car"    ::PASS
+Type().GetNumberofTiers()-------------------------- 0 ::PASS
+Type().IsAC()------------------------------True::PASS
+Type().IsSitting()--------------------------True::PASS
+Type().IsLuxury()---------------------------False  ::PASS
+Golden Output with cout:::PASS
+ACChairCar
+ : Mode: Sitting
+ : Comfort: AC
+ : Bunks: 0
+ : Luxury: No
+
+ExecutiveChairCar:                          Goldens
+Type().GetName() -------------------------- "Executive Chair Car:" ::PASS   
+Type().GetNumberofTiers()-------------------------- 0 ::PASS
+Type().IsAC()------------------------------True::PASS
+Type().IsSitting()--------------------------True::PASS
+Type().IsLuxury()---------------------------True  ::PASS
+Golden Output with cout:::PASS
+ExecutiveChairCar
+ : Mode: Sitting
+ : Comfort: AC
+ : Bunks: 0
+ : Luxury: Yes
+
+ACFirstClass:                               Goldens
+Type().GetName() -------------------------- "AC First Class:"    ::PASS
+Type().GetNumberofTiers()-------------------------- 2 ::PASS
+Type().IsAC()------------------------------True::PASS
+Type().IsSitting()--------------------------False::PASS
+Type().IsLuxury()---------------------------True  ::PASS
+Golden Output with cout:::PASS
+ACFirstClass
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: Yes
+
+FirstClass:                               Goldens
+Type().GetName() -------------------------- "First Class:"    ::PASS
+Type().GetNumberofTiers()-------------------------- 2 ::PASS
+Type().IsAC()------------------------------False::PASS
+Type().IsSitting()--------------------------False::PASS
+Type().IsLuxury()---------------------------True  ::PASS
+Golden Output with cout:::PASS
+FirstClass
+ : Mode: Sleeping
+ : Comfort: Non-AC
+ : Bunks: 2
+ : Luxury: Yes
+
+Sleeper:                               Goldens
+Type().GetName() -------------------------- "Sleeper:"    ::PASS
+Type().GetNumberofTiers()-------------------------- 3 ::PASS
+Type().IsAC()------------------------------False::PASS
+Type().IsSitting()--------------------------False::PASS
+Type().IsLuxury()---------------------------False ::PASS
+Golden Output with cout:::PASS
+Sleeper
+ : Mode: Sleeping
+ : Comfort: Non-AC
+ : Bunks: 3
+ : Luxury: No
+
+SecondSitting:                               Goldens
+Type().GetName() -------------------------- "Second Sitting:"    ::PASS
+Type().GetNumberofTiers()-------------------------- 0 ::PASS
+Type().IsAC()------------------------------False::PASS
+Type().IsSitting()--------------------------True::PASS
+Type().IsLuxury()---------------------------False ::PASS
+Golden Output with cout: ::PASS
+SecondSitting
+ : Mode: Sitting
+ : Comfort: Non-AC
+ : Bunks: 0
+ : Luxury: No
+---------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------
+
+Divyang :
+
+Blind:
+                                               Goldens
+Blind::Type().getDivyangName()-----------------"Blind"::PASS
+Blind::Type().GetConcession(AC2Tier_ID)------------0.5::PASS
+
+Ortho:
+                                       Golden
+Ortho::Type().getDivyangName()----------"Ortho"::PASS
+Ortho::Type().GetConcession(AC2Tier_ID)-----------0.500::PASS
+
+Cancer :                                  Golden
+Cancer::Type().getDivyangName()------------"Cancer"::PASS
+Cancer::Type().GetConcession(AC2Tier_ID)-------0.5001::PASS
+
+Tb:
+                                        Golden
+Tb::Type().getDivyangName()-------------"Tb"::PASS
+(Tb::Type().GetConcession(AC2Tier_ID)----0  ::PASS
+--------------------------------------------------------------------
+
+Concessions:
+  DivyangConcessions: 
+  Passenger *P = Passenger::CreatePassenger("412875496523", "5/12/1990", Gender::Male::Type(), "4125896541", "Kannan", "", "Jarrus", "4512", &Divyang::Blind::Type());
+  
+  DivyangConcession Cons(*P,BookingClass::ACChairCar::Type()).concession_------0.75 (_Golden OP)::PASS
+  DivyangConcession Cons(*P,BookingClass::AC2Tier::Type()).concession_------0.50 (_Golden OP)::PASS
+
+  GeneralConcessions:
+  GeneralConcession::Type().concession_----------0.00(Golden)::PASS
+
+  LadiesConcession:
+  LadiesConcession().concession_---------0.00(Golden)::PASS
+
+  SrCitizenConcession:
+  //Male
+  Passenger *P1 = Passenger::CreatePassenger("412875496523", "5/12/1990", Gender::Male::Type(), "4125896541", "Kannan", "", "Jarrus", "4512", &Divyang::Blind::Type());
+  //Female
+  Passenger *P2 = Passenger::CreatePassenger("415621478953", "6/6/1960", Gender::Female::Type(), "4512639876", "", "", "Satine");
+  SrCitizenConcession Cons1(*P1);
+  SrCitizenConcession Cons2(*P2);
+
+  Cons1.concession_-------------0.4(Golden)::PASS
+  Cons2.concession_-------------0.5(Golden)::PASS
+------------------------------------------------------------------------------
+
+
+
+
+Application Test Suite:
+
+
+P1 = Passenger::CreatePassenger("123456781234", "1/2/1980", Gender::Male::Type(), "9433222222", "Anakin", "", "Skywalker", "1111", &Divyang::Ortho::Type());
+P2 = Passenger::CreatePassenger("425631458963", "2/5/1901", Gender::Male::Type(), "9433162841", "", "", "Yoda");
+P3 = Passenger::CreatePassenger("896412357412", "18/6/1970", Gender::Male::Type(), "9433821652", "Obi", "Vann", "Kenobi");
+P4 = Passenger::CreatePassenger("844451263212", "11/11/2001", Gender::Male::Type(), "7455126438", "Luke", "", "Skywalker");
+P5 = Passenger::CreatePassenger("415621478953", "6/6/1960", Gender::Female::Type(), "4512639876", "", "", "Satine");
+P6 = Passenger::CreatePassenger("875496235412", "9/10/1976", Gender::Female::Type(), "4512369875", "Padme", "", "Amidala");
+P7 = Passenger::CreatePassenger("412875496523", "5/12/1990", Gender::Male::Type(), "4125896541", "Kannan", "", "Jarrus", "4512", &Divyang::Blind::Type());
+P8 = Passenger::CreatePassenger("841250310123", "21/6/1940", Gender::Male::Type(), "7485123654", "", "", "Hutt", "8451", &Divyang::Tb::Type());
+
+Tests:
+//Invalid Passenger Aadhar(Golden):PASS
+P9 = Passenger::CreatePassenger("84125031012", "21/6/1940", Gender::Male::Type(), "7485123654", "", "", "Hutt", "8451", &Divyang::Tb::Type());
+
+//Invalid Passenger Mobile(Golden):PASS
+P9 = Passenger::CreatePassenger("841250310123", "21/6/1940", Gender::Male::Type(), "748512654", "", "", "Hutt", "8451", &Divyang::Tb::Type());
+
+//Invalid Passenger Name(Golden):PASS
+P9 = Passenger::CreatePassenger("841250310123", "21/6/1940", Gender::Male::Type(), "7485126547", "", "", "", "8451", &Divyang::Tb::Type());
+
+//Invalid date Format(Golden):PASS
+Booking *B1 = BookingCategory::General::Type().createBooking("Kolkata", "Mumbai", "1/4/2021", "7/4///85", BookingClass::AC2Tier::Type(), P1);
+
+Booking *B1 = BookingCategory::General::Type().createBooking("Kolkata", "Mumbai", "1/4/2021", "7/4/2021", BookingClass::AC2Tier::Type(), P1);
+Golden OP::PASS
+BOOKING SUCCEEDED:
+PNR Number = 1
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = General
+Fare = 4078
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+Booking *B2 = BookingCategory::General::Type().createBooking("Chennai", "Mumbai", "5/4/2021", "4/4/2021", BookingClass::SecondSitting::Type(), P3);
+Golden OP: Invalid Dates of Booking and Reservation(Golden):PASS
+
+
+//Invalid dates of reservation and booking(Golden):PASS
+Booking *B3 = BookingCategory::General::Type().createBooking("Delhi", "Kolkata", "4/4/2021", "5/6/2022", BookingClass::Sleeper::Type(), P2);
+
+
+ //Invalid station(Golden):PASS
+Booking *B4 = BookingCategory::General::Type().createBooking("Delhi", "Howrah", "4/4/2021", "5/6/2021", BookingClass::Sleeper::Type(), P2);
+
+
+Booking *B1 = BookingCategory::Divyang::Type().createBooking("Kolkata", "Mumbai", "1/4/2021", "7/4/2021", BookingClass::AC2Tier::Type(), P1);
+Golden ::PASS
+BOOKING SUCCEEDED:
+PNR Number = 2
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = Divyang
+Fare = 2064
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+
+Booking *B2 = BookingCategory::SeniorCitizen::Type().createBooking("Chennai", "Mumbai", "5/4/2021", "6/4/2021", BookingClass::SecondSitting::Type(), P2);
+Golden ::PASS
+BOOKING SUCCEEDED:
+PNR Number = 3
+From Station = Mumbai
+To Station = Chennai
+Booking Date = 5/April/2021
+Travel Date = 6/April/2021
+Travel Class = Second Sitting
+ : Mode: Sitting
+ : Comfort: Non-AC
+ : Bunks: 0
+ : Luxury: No
+Booking Category = Senior Citizen
+Fare = 256
+Passenger Details:
+Name:   Yoda
+Aadhar Number: 425631458963
+Date of Birth : 2/May/1901
+Gender: Male
+Mobile No.: 9433162841
+Disablity Id.: None
+Disability Type : None
+
+
+//Incompatible passenger and booking category(Golden):PASS
+Booking *B2 = BookingCategory::Divyang::Type().createBooking("Chennai", "Mumbai", "5/4/2021", "7/4/2021", BookingClass::SecondSitting::Type(), P5);
+
+ //Invalid Dates(Golden):PASS
+Booking *B3 = BookingCategory::Ladies::Type().createBooking("Delhi", "Kolkata", "4/4/2021", "5/6/2022", BookingClass::Sleeper::Type(), P6);
+
+
+
+//Invalid station(Golden):PASS
+Booking *B4 = BookingCategory::SeniorCitizen::Type().createBooking("Delhi", "Amedabad", "4/4/2021", "5/6/2021", BookingClass::Sleeper::Type(), P5);
+
+
+Booking *B1 = BookingCategory::Tatkal::Type().createBooking("Kolkata", "Mumbai", "1/4/2021", "7/4/2021", BookingClass::AC2Tier::Type(), P1);
+Golden::PASS
+BOOKING SUCCEEDED:
+PNR Number = 4
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = Tatkal
+Fare = 4578
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+Booking *B2 = BookingCategory::PremiumTatkal::Type().createBooking("Chennai", "Mumbai", "5/4/2021", "8/4/2021", BookingClass::SecondSitting::Type(), P3);
+Golden::PASS
+BOOKING SUCCEEDED:
+PNR Number = 5
+From Station = Mumbai
+To Station = Chennai
+Booking Date = 5/April/2021
+Travel Date = 8/April/2021
+Travel Class = Second Sitting
+ : Mode: Sitting
+ : Comfort: Non-AC
+ : Bunks: 0
+ : Luxury: No
+Booking Category = PremiumTatkal
+Fare = 446
+Passenger Details:
+Name: Obi Vann Kenobi
+Aadhar Number: 896412357412
+Date of Birth : 18/June/1970
+Gender: Male
+Mobile No.: 9433821652
+Disablity Id.: None
+Disability Type : None
+
+
+//Invalid Date(Golden):PASS
+Booking *B2 = BookingCategory::PremiumTatkal::Type().createBooking("Chennai", "Mumbai", "5/4/2021", "4/4/2021", BookingClass::SecondSitting::Type(), P3);
+
+
+//Invalid Date(Golden):PASS
+Booking *B3 = BookingCategory::Tatkal::Type().createBooking("Delhi", "Kolkata", "4/4/2021", "5/6/2022", BookingClass::Sleeper::Type(), P2);
+
+Booking *B3 = BookingCategory::Tatkal::Type().createBooking("Delhi", "Kolkata", "4/4/2021", "5/6/2021", BookingClass::Sleeper::Type(), P1);
+Golden: :PASS
+BOOKING SUCCEEDED:
+PNR Number = 6
+From Station = Kolkata
+To Station = Delhi
+Booking Date = 4/April/2021
+Travel Date = 5/June/2021
+Travel Class = Sleeper
+ : Mode: Sleeping
+ : Comfort: Non-AC
+ : Bunks: 3
+ : Luxury: No
+Booking Category = Tatkal
+Fare = 956
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho

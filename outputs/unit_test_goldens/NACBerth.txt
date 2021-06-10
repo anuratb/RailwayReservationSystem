@@ -1,0 +1,5 @@
+First Class
+ : Mode: Sleeping
+ : Comfort: Non-AC
+ : Bunks: 2
+ : Luxury: Yes

@@ -1,0 +1,26 @@
+Invalid Dates of Booking and Reservation
+Invalid Dates of Booking and Reservation
+Invalid Station
+BOOKING SUCCEEDED:
+PNR Number = 1
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = General
+Fare = 4078
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+

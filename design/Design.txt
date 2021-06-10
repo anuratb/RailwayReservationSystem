@@ -1,0 +1,494 @@
+Name :Anurat Bhattacharya
+Roll :19CS10071
+
+HLD
+---
+
+The project has the following classes
+
+1)Station :For storing station name
+2)Railways :For storing all stations and their distances
+3)BookingClass :For making the bookings and implementijng the business logic
+with the following hierarchy(flat level inheritance) implemented using inclusion-parametric polymorphism
+    |
+    |-->ACFirstClass
+    |-->AC2Tier
+    |-->AC3Tier
+    |-->ExecutiveChairCar
+    |-->ACChairCar
+    |-->Sleeper
+    |-->FirstClass
+    |-->SecondSitting
+4)BookingCategory
+with the following hierarchy(flat level inheritance) implemented using inclusion-parametric polymorphism.
+    |
+    |-->General
+    |-->Ladies
+    |-->SeniorCitizen
+    |-->Divyang
+    |-->Tatkal
+    |-->PremiumTatkal
+
+5)Concessions :Used for Extracting cocession factors
+with the following hierarchy(flat level inheritance) implemented using ad-hoc polymorphism.
+    |
+    |-->GeneralConcession
+    |-->LadiesConcession
+    |-->SrCitizenConcession
+    |-->DivyangConcession    
+
+6)Date class : for storing the date along with validation
+7)BookingClass :for doing the bookings computing fare and storing them as a static vector
+with the following hierarchy(flat level inheritance) implemented using ad-hoc polymorphism.
+    |
+    |-->GeneralBooking
+    |-->ConcessionalBooking
+    |-->PriorityBooking
+8)Divyang Class: For implementing Divyang Types and storing its respective concession values
+with the following hierarchy(flat level inheritance) implemented using ad-hoc polymorphism.
+    |
+    |-->Blind
+    |-->Ortho
+    |-->Cancer
+    |-->Tb
+9)Passenger class: It is a simple data class stored information as described in the LLD.
+10)ExceptionClasses are all inherited from the std::exception (ad hoc polymorphism)
+    |
+    |-->Bad_Date
+    |-->Bad_Passenger
+    |-->Bad_Railways
+    |-->Bad_Station
+
+
+Some important design points:
+1)The concession factors for srCitizen and divyang are not stored int the concession class.
+They are stored in the gender and Divyang classes as static members .The role of the concession class is to 
+output the appropriate concession class based on passenger booking class etc.This ensures type safety and 
+smoothy getting the appropriate concession values basd on the respective dependencies.
+2)For exception handling wherever applicable,while constructing the objects, the objects are constructed using static methods and the constructors
+are made private.
+
+
+LLD
+-----
+
+The project has the following Classes,along with the respective User Interfaces and Private,Protected members:
+ 
+Station:
+    | Station(string name) :It is the constructor of the Class Taking name as Input
+    | Station(const Station &other) :Copy constructor
+    | friend ostream &operator<<(ostream &os, const Station &st) :Friend Function for Output Stream operator
+    | string GetName() const :For Getting the Station Name as a string
+    | double GetDistance(const Station &other) const :For getting the distance between current and other Station
+    | static Station& createStation(string name) :To validate input and cnonstruct station
+    | static bool UnitTestStation() : For Unit Testing of Station
+
+Railways:
+	|static Railways& createRailway() (Private Static method to validate and construct object and return called by IndianRailways)
+    |Static Members and Methods:
+    |   |vector<Station> sStations :Contains List of Stations
+    |   |vector<vector<double>> sDistStations :Distance Matrix between Stations
+    |   |const static map<string, int> sInd :Map from Station name to station Index
+    |   |Railways &IndianRailWays() :For returning Singleton Object Meyers Methods
+    |   
+    |
+    |double GetDistance(const Station &frm, const Station &to): For getting Distance Between From and To Station
+    |friend ostream &operator<<(ostream &os, const Railways &railways): friend Function for overloading output Stream operator
+    |static bool UnitTestRailways() :For Unit Testing
+
+BOOKING CLASS   
+-------------
+Inclusion-Parametric polymorphism is used to define the derived classes
+in order to prevent code bloat as most of them have similar data,and there is
+no logical reason to to break them up into multi level hierarchy
+
+BookingClass: It is an Abstract Base Class for all Booking Classes
+    |Pure Virtual Functions
+    |	|int GetClassId() const =0;  //For Assigning a unique id with every Class (Assigned Statically)
+    |   |double GetLoadFactor() const :For returning Load Factor
+    |   |bool IsSitting() const :For returning 1 if it is Sitting else 0
+    |   |bool IsAC() const: Retuens 1 if AC 0 else
+    |   |int GetNumberofTiers() const : Returns no. of tiers
+    |   |bool IsLuxury() const : Returns 1 if Luxury 0 else
+    |   |double GetTatkalLoadFactor() const                   //To get Tatkal load factor
+    |   |double GetTatkalMinCharge() const                    //To get Tatkal Min charge
+    |   |double GetTatkalMaxCharge() const                    //To get Tatkal Max Charge
+    |   |double GetTatkalMinDistance() const                  //To get Tatkal Min Distance
+    |   |double GetReservationCharge() const                  //To get Reservation charge
+    |BookingClass(string nme): Constructor taking name of Booking class as Argument
+    |virtual ~BookingClass():Virtual Destructor
+    |string GetName() const: To get name of the Booking Class
+    |static bool UnitTestBookingClass(): For Unit Testing
+    |friend ostream &operator<<(ostream &os, const BookingClass &obj): /output stream operator
+    |/***the typedeffed subcalsses****/
+    |typedef BookingClassNames<AC2Tier_> AC2Tier;
+    |typedef BookingClassNames<AC3Tier_> AC3Tier;
+    |typedef BookingClassNames<ACFirstClass_> ACFirstClass;
+    |typedef BookingClassNames<ACChairCar_> ACChairCar;
+    |typedef BookingClassNames<ExecutiveChairCar_> ExecutiveChairCar;
+    |typedef BookingClassNames<SecondSitting_> SecondSitting;
+    |typedef BookingClassNames<FirstClass_> FirstClass;
+    |typedef BookingClassNames<Sleeper_> Sleeper;
+
+
+class BookingClassNames<T> inherites publicly from BookingClass
+T denotes any type name
+private static parameters:
+static const string sBookingClassName;
+    |static const bool sIsAC;   //For denoting if AC
+    |static bool sIsLuxury;     //For denoting if Luxury
+    |static const int sTiers;   //For denoting tiers number
+    |static const bool sIsSitting;  //For denoting if Sitting
+    |static double sLoadFactor;     //For storing load factor
+    |static double sTatkalLoadFactor;   //For for storing tatkal load factor
+    |static double sMinTatkalCharge;    //For for storing tatkal min charge
+    |static double sMaxTatkalCharge;    //For storing max tatkal charge
+    |static double sMinTatkalDistance;  //For storing min tatkal distance
+    |static double sReservationCharge;  //For storing reservation charge
+    |static const int sBookingClassId;  //Unique id for diff booking classess {0,1,...}
+    /***In addition to this all the pure virtual funvtions of the base class are implemented***/
+    |BookingClassNames(const string& nme = BookingClassNames<T>::sBookingClassName) :BookingClass(nme) {}//CR
+    |virtual ~BookingClassNames() {};//Destructor
+    |static const BookingClassNames<T>& Type();//To return Singleton object
+
+BOOKING CATEGORY
+-----------------
+
+Inclusion-parametric polymorphism is used to created the sub classes namely:
+General,SrCitizen,Ladies,Divyang,Tatkal,PremiumTatkal
+
+class BookingCategory{Abstract}
+--->Private Members
+    |const string categoryName_;  //To store category name 
+    |struct General_ {};    
+    |struct SrCitizen_{};      
+    |struct Divyang_ {}; 
+    |struct Tatkal_ {};
+    |struct PremiumTatkal_{};  
+    |struct Ladies_ {};
+     
+--->Constructor and virtual destructor are made protected
+    BookingCategory(string nme);
+    virtual ~BookingCategory();
+
+--->Public Methods
+    --->Pure Virtual Functions
+    |    |virtual double getConcession(const Passenger& P,const BookingClass& B) 
+    |    |//To get the value of concession from the Concessions class given passenger and booking class
+    |string getCategoryName() const//Reurns category name  
+    |//Typedefs             
+    |typedef BookingCategoryNames<General_> General;
+    |typedef BookingCategoryNames<SrCitizen_> SeniorCitizen;
+    |typedef BookingCategoryNames<Divyang_> Divyang; 
+    |typedef BookingCategoryNames<Ladies_> Ladies; 
+    |typedef BookingCategoryNames<Tatkal_> Tatkal; 
+    |typedef BookingCategoryNames<PremiumTatkal_> PremiumTatkal; 
+
+class BookingCategoryNames
+---->Private Contructor and virtual Destructor
+    BookingCategoryNames(const string &nme = BookingCategoryNames<T>::sCategoryName) : BookingCategory(nme) {} //CR
+    virtual ~BookingCategoryNames(){};                                                                         //Destructor
+---->Public Methods
+    |double getConcession(const Passenger &P, const BookingClass &B) const 
+    --->Static members
+    |static const string sEligibility //Returns the eligibility criteria as a string need to be returned during validation
+    |static const string sCategoryName;//stors current category name
+    |static const BookingCategoryNames<T> &Type(); //To return Singleton object
+
+CONCESSIONS CLASS
+------------------
+
+In Brief: Ad Hoc Polymorphism is used to created concession classes in parallel with
+the booking categories namely General,Ladies,SrCitizen,Divyang.
+For Tatkal and premium tatkal we are not creating any new classes as these constitute priority booking
+and hence have no concessions.
+We construct objects for ladies,srcitizen and divyang with respenctive dependencies and call
+getConcession to get the concession value.For general there is no dependency on passenger or booking class
+and hence it is made singleton.The concession values are atored as:
+1)For general  :sgenConcession static member of GeneralConcession
+2)For Ladies   :sladiesConcession static member of LadiesConcession
+3)For SrCitizen :In Gender Class 
+4)For Divyang :In Divyang Class
+The above choices were done to ensure type safety 
+so that explicit type checking does not have to be done
+
+class Concessions 
+--->Private members
+    |double concession_;
+--->Public Methods
+    |Concessions(double value) ;//CCR
+    |virtual ~Concessions();//Destructor
+    |double getConcession() const ;//To get concession value
+
+class GeneralConcession
+--->Private Constructor and virtual destructor
+    |const static double sgenConcession 
+    |GeneralConcession();
+    |~GeneralConcession();
+--->Public Method   
+    |static const GeneralConcession & Type();//To get singleton type as general has no dependency
+                                              //it is always 0 so only 1 class is needed
+
+class LadiesConcession   //Checking is done in booking for eligibility before using this
+--->public Contructor and destructor
+    |LadiesConcession();
+    |~LadiesConcession();
+    //Since this class depends on the passenger gender it is not made singleton
+
+class SrCitizenConcession
+--->Public Constructor and destructor
+    |SrCitizenConcession(const Passenger& P);
+    |~SrCitizenConcession();
+    //Not made singleton due to dpendency on gender
+
+class DivyangConcession
+--->Public Constructor and Destructor
+    |DivyangConcession(const Passenger& P,const BookingClass & B) ;
+    |~DivyangConcession();
+    //Not made singleton due to dpendency on gender and booking class
+
+DIVYANG CLASS
+--------------
+
+In Brief: Inclusion -Parametric polymorphism is used to create the subclasses namely,
+Blind,Ortho,Cancer and Tb.In this class the concession values corresponding to 
+different bookin class are also stored .This is done by first associating as booking class
+with an integer id as shown before and making a vector from which we will get the corresponding 
+concession value by dynamically extracting the id from the BookingClass, done by using the virtual
+construct.Also the subclasses are made singletons.
+
+
+class Divyang{Abstract}
+---->Private members
+    const string divyangName_;
+    struct Blind_ {};
+    struct Ortho_ {};
+    struct Cancer_ {};    
+    struct Tb_ {};       
+--->Protected Constrcutor and virtual destructor
+    Divyang(const string& divName) :divyangName_(divName) {}
+    virtual ~Divyang() {}//Destructor
+--->public Methods
+    virtual double GetConcession(int BookingClassid) const = 0;//pure Virtual method to get concession value
+    string getDivyangName() ;//Toreturn divyang name
+    -->Typedefs
+    typedef DivyangNames<Blind_> Blind;
+    typedef DivyangNames<Ortho_> Ortho;
+    typedef DivyangNames<Cancer_> Cancer;
+    typedef DivyangNames<Tb_> Tb;  
+
+    friend ostream& operator<<(ostream& os,const Divyang & D);//output stream operator
+
+Subclasses : Parameterised
+
+class DivyangNames<T> inherits publicly Divyang
+--->Private Methods
+    static const string sDivyangName;//name of divyang subtype 
+    static const vector<double> sDivyangCons;//To store divyang concessions indexed by BookingClass Id
+    inline DivyangNames(string nme = DivyangNames<T>::sDivyangName): Divyang(nme) {}//Cr
+    virtual ~DivyangNames() {};//Destructor
+    inline double GetConcession(int BookingClassid) const {return DivyangNames<T>::sDivyangCons[BookingClassid];}
+--->Public Methods
+    static const DivyangNames<T> &Type();//To return Singleton
+    
+GENDER 
+-------
+
+In Brief : Inclusion -parametric polymorphism is used to model the Gender Class
+In Addition in this the concession for the Senior Citezens are also stored
+for using the virtual construct and getting the cocession value from the concessions class
+while ensuring type safety
+
+class Gender
+--->Private Declarations
+    struct Male_{};
+    struct Female_{};
+---->Protected Members along with constructor and virtual destructor
+    const string genderName_;  //To store gender name
+    const double SrCitizenConcession_;  //To store senior citizen concession
+    Gender(string nme,double val);  //Cr
+    virtual ~Gender();   /Destructor
+---->Public methods
+    string getName() const ;  //To get gender name
+    double getSrCitizenConcession() const ;  //To get senior citizen concession
+--->Typdefs
+    typedef GenderTypes<Male_> Male;
+    typedef GenderTypes<Female_> Female;
+
+
+
+class GenderTypes inherits publicly from Gender
+--->Private Members along with constructor and destructor
+    GenderTypes(string nme = GenderTypes<T>::sName,double cons = GenderTypes<T>::sSrCitizenConcession);//Cosntructor
+    ~GenderTypes() ;//Destructor
+
+    --->Static Members
+    static const string sName; //TO store gender name
+    static const double sSrCitizenConcession; //TO store concession value
+
+--->Public Methods
+    static const GenderTypes &Type();  //To return Singleton Object  
+
+
+BOOKING 
+--------
+In Brief : The booking class is divided into
+
+
+Booking{Abstract}:
+--->Protected
+    --->Data Members
+    |Station fromStation_;                                                                               //From Station
+    |Station toStation_;                                                                                 //To Station
+    |Date dateofBooking_;                                                                                //Date of Booking
+    |Date dateofReservation_;                                                                            //Date of Reservation
+    |const BookingClass &bookingClass_;                                                                  //Booking Class
+    |const BookingCategory &bookingCat_;                                                                 //Booking Category
+    |const Passenger p_;                                                                                 //Passenger
+    |int pnr_;
+    ---> Cr and virtual Destructor
+    |Booking(const Station &frm, const Station &to, Date booking,Date reservation, const BookingClass &tp,const BookingCategory &bookingCat ,const Passenger &P); //CR
+    |
+    |    Constructor taking the following as arguments:
+    |        -->From Station frm(Station object)
+    |        -->To Station to(Station object)
+    |        -->Date booking(Date of Booking)
+    |        -->Date reservation(Date of Reseervation)
+    |        -->BookingClass Type tp(const BookingClass &)
+    |        -->Passenger 
+    |        -->BookingCategory  
+    |virtual ~Booking() : Destructor 
+--->Public  
+    |Static Members:
+    |   |static const double sBaseFarePerKM :Base Fare Per Km set as 0.50
+    |   |static vector<Booking *> sBookings :List of all bookings done initially an empty vector
+    |   |static int sBookingPNRSerial : Next available PNR initially 1
+    |friend ostream &operator<<(ostream &os, const Booking &booking): Output stream operator
+    |int ComputeFares() const = 0; : 
+    |    //For now Made Pure Virtual In the derived classes, it
+    |    // Returns Computed fare using the following business logic:
+    |   -->Base fare = distance_btw_stations*sBaseFarePerKM
+    |   -->Loaded Fare = Base fare * GetLoadFactor
+    |   -->Charges and concesssions based on Booking category
+    |               --->If Tatkal charged depending on tatkal load factors,and capped by min and max charges and min distance for tatkal 
+    |               --->If PremiumTatkal charged double of Tatkal
+    |               --->If Concession cessessions given as per category
+    |               --->If General no concession
+    |   -->The finally computed loaded fare is rounded to the nearest integer and returned
+    |static bool UnitTestBooking() : For Unit Testing
+
+class GeneralBooking
+    ---Private Constructor
+    GeneralBooking(const Station &frm, const Station &to, Date d, const BookingClass &tp, const Passenger &P);
+
+    --->Public Methods
+    static GeneralBooking &createGeneralBooking(const Station &frm, const Station &to, Date d, const BookingClass &tp, const Passenger &P);//For validation and creation
+    int ComputeFares() const; //To compute fare
+    ~GeneralBooking();        //Destructor
+
+
+class PriorityBooking
+--->Private Constructor
+    PriorityBooking(const Station &frm, const Station &to, Date d, const BookingClass &tp,const BookingCategory& bookingcat, const Passenger &P);
+    public:
+    static PriorityBooking& createPriorityBooking(const Station &frm, const Station &to, Date d, const BookingClass &tp,const BookingCategory& bookingcat, const Passenger &P);//For validation and creation
+    int ComputeFares() const;//To compute fare
+    ~PriorityBooking(); //Destructor
+
+class ConcessionalBooking
+--->Private Cnstructor
+    ConcessionalBooking(const Station &frm, const Station &to, Date d, const BookingClass &tp,const BookingCategory& bookingcat, const Passenger &P);
+--->Public Methods
+    static ConcessionalBooking& createConsessionalBooking(const Station &frm, const Station &to, Date d, const BookingClass &tp,const BookingCategory& bookingcat, const Passenger &P);//For validation and creation
+    int ComputeFares() const ;  //To compute fare
+    ~ConcessionalBooking(); //Destructor
+
+
+
+
+
+Passenger:
+---.Private 
+    struct Name  //To get name correctly and validate it
+    {
+        string firstName;
+        string middleName;
+        string lastName;
+    };
+    //DAta Members
+    Name name_;                        //Name of Passenger
+    string aadharNo_;                  //Aadhar number
+    Date dob_;                         //Date of Birth
+    const Gender &gender_;             //  Gender M/F
+    string mob_;                       //mobile number
+    string disabilityID_;{optional}
+    const Divyang* const disabilityType_; {optional}                                                                                                                  //Gen,Ladies,SrCitizen,Divyang,Tatkal,PremiumTatkal
+    Passenger(string aadhar, Date dob, const Gender &gender, string mob, string firstName, string middleName, string lastName,string dsablity_id="",const Divyang* disabilityType_=NULL); //Costructor
+    friend ostream &operator<<(ostream &os, const Passenger &);    //For output stream                                                                                 
+public:
+    const Gender& getGender() const ;//To get gender 
+    const Divyang* const getDisabiltiyType() const;//To return Disability type 
+    static Passenger& CreatePassenger(string aadhar, Date dob, const Gender &gender, string mob, string firstName, string middleName, string lastName,string dsablity_id="",const Divyang* disabilityType_=NULL); //To create a pasenger validate input and return it
+    Passenger(const Passenger &other);      //CCr                                                                                //CAO
+    static bool UnitTestPassenger(); //Unit Testing
+
+
+Date : Date Class
+--->Private
+    int d_, m_, y_; //Private Members
+    static const vector<string> sDays;   //Day name
+    static const vector<string> sMonths; //Month names
+    static const vector<int> sMonthDays; //Days in each month
+    Date(int d, int m, int y);           //CR PRivate
+       -->date d(integer)
+       -->month m(integer)(1 indexed)(For eg. 1->January 2->February and so on.. )
+       -->year y(integer)
+--->public
+    |static Date createDate(int d, int m, int y);//To validate and create date
+    |Date(const Date &other): Copy Constructor
+    |Date &operator=(const Date &other) : Copy Assignment Operator
+    |friend ostream &operator<<(ostream &os, const Date &dd): Output Stream operator
+    |bool operator==(const Date &that): Equality operator returns 1 if two dates are same
+    |static bool UnitTestDate() : For Unit Testing
+    |static int getElapsedYears(const Date &D);        //To get age of passenger
+    |static bool checkResvDate(const Date &bookingDate,const Date& reservationDate);//To validate date of booking and date of reservation if booking date is within 1 year and not before 1 day
+
+EXCEPTION HANDLING CLASSES
+--------------------------
+
+class Bad_Date inherits std::exception publicly
+--->Private Member
+    |string err_msg_ //For storing error Message
+
+--->Public Methods
+    |Bad_Date(string mess="Invalid Date"); //Constructor 
+    |~Bad_Date() throw();
+    |const char *what() const throw() ;//returns error message
+
+class Bad_Passenger inherits std::exception publicly
+--->Private Member
+    |string err_msg_ //For storing error Message
+
+--->Public Methods
+    |Bad_Passenger(string mess="Invalid Passenger"); //Constructor 
+    |~Bad_Passenger() throw();
+    |const char *what() const throw() ;//returns error message
+
+class Bad_Railways inherits std::exception publicly
+--->Private Member
+    |string err_msg_ //For storing error Message
+
+--->Public Methods
+    |Bad_Railways(string mess="Invalid Railways"); //Constructor 
+    |~Bad_Railways() throw();
+    |const char *what() const throw() ;//returns error message
+
+class Bad_Station inherits std::exception publicly
+--->Private Member
+    |string err_msg_ //For storing error Message
+
+--->Public Methods
+    |Bad_Station(string mess="Invalid Station"); //Constructor 
+    |~Bad_Station() throw();
+    |const char *what() const throw() ;//returns error message
+    

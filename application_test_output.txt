@@ -1,0 +1,158 @@
+RUNNING  APPLICATION TEST...
+
+PROGRAM OUTPUT:
+-------------------
+Invalid Passenger Aadhar
+Invalid Passenger Mobile
+Invalid Passenger Name
+Invalid Format of Date
+Invalid Dates of Booking and Reservation
+Invalid Dates of Booking and Reservation
+Invalid Station
+Incompatible Passenger and Booking Category!
+Invalid Dates of Booking and Reservation
+Invalid Station
+Invalid Dates of Booking and Reservation
+Invalid Dates of Booking and Reservation
+BOOKING SUCCEEDED:
+PNR Number = 1
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = General
+Fare = 4078
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+
+BOOKING SUCCEEDED:
+PNR Number = 2
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = Divyang
+Fare = 2064
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+
+BOOKING SUCCEEDED:
+PNR Number = 3
+From Station = Mumbai
+To Station = Chennai
+Booking Date = 5/April/2021
+Travel Date = 6/April/2021
+Travel Class = Second Sitting
+ : Mode: Sitting
+ : Comfort: Non-AC
+ : Bunks: 0
+ : Luxury: No
+Booking Category = Senior Citizen
+Fare = 256
+Passenger Details:
+Name:   Yoda
+Aadhar Number: 425631458963
+Date of Birth : 2/May/1901
+Gender: Male
+Mobile No.: 9433162841
+Disablity Id.: None
+Disability Type : None
+
+
+BOOKING SUCCEEDED:
+PNR Number = 4
+From Station = Mumbai
+To Station = Kolkata
+Booking Date = 1/April/2021
+Travel Date = 7/April/2021
+Travel Class = AC 2 Tier
+ : Mode: Sleeping
+ : Comfort: AC
+ : Bunks: 2
+ : Luxury: No
+Booking Category = Tatkal
+Fare = 4578
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+
+BOOKING SUCCEEDED:
+PNR Number = 5
+From Station = Mumbai
+To Station = Chennai
+Booking Date = 5/April/2021
+Travel Date = 8/April/2021
+Travel Class = Second Sitting
+ : Mode: Sitting
+ : Comfort: Non-AC
+ : Bunks: 0
+ : Luxury: No
+Booking Category = PremiumTatkal
+Fare = 446
+Passenger Details:
+Name: Obi Vann Kenobi
+Aadhar Number: 896412357412
+Date of Birth : 18/June/1970
+Gender: Male
+Mobile No.: 9433821652
+Disablity Id.: None
+Disability Type : None
+
+
+BOOKING SUCCEEDED:
+PNR Number = 6
+From Station = Kolkata
+To Station = Delhi
+Booking Date = 4/April/2021
+Travel Date = 5/June/2021
+Travel Class = Sleeper
+ : Mode: Sleeping
+ : Comfort: Non-AC
+ : Bunks: 3
+ : Luxury: No
+Booking Category = Tatkal
+Fare = 956
+Passenger Details:
+Name: Anakin  Skywalker
+Aadhar Number: 123456781234
+Date of Birth : 1/February/1980
+Gender: Male
+Mobile No.: 9433222222
+Disablity Id.: 1111
+Disability Type : Ortho
+
+
+
+Application Test Passed
+Program Output Matched with Golden Output
+
